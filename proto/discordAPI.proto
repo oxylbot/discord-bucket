@@ -1,8 +1,13 @@
 syntax = "proto2"; //Specify proto2 version.
 
 service DiscordAPI {
+    // channel getters/setters
     rpc GetChannel(GetChannelRequest) returns (ChannelResponse);
-    rpc EditChannel(EditChannelRequest) returns (ChannelResponse)
+    rpc EditChannel(EditChannelRequest) returns (ChannelResponse);
+    rpc DeleteChannel(DeleteChannelRequest) returns (ChannelResponse);
+
+    // message getters/setters
+    rpc GetChannelMessages(GetChannelMessagesRequest) returns (MessagesResponse)
     rpc SendMessage(stream SendMessageRequest) returns (MessageResponse);
     rpc EditMessage(stream EditMessageRequest) returns (MessageResponse);
 }
@@ -66,7 +71,15 @@ message EditChannelRequest {
     optional string parentID = 11;
 }
 
+message DeleteChannelRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+}
 // Response objects
+
+message MessagesResponse {
+
+}
 
 message MessageResponse {
     required uint32 errorCode = 1;
@@ -90,6 +103,46 @@ message ChannelResponse {
 
 // First class objects
 
+message UserObject {
+    required string id = 1;
+    required string username = 2;
+    required string discriminator = 3;
+    optional string avatar = 4;
+    optional bool bot = 5;
+    optional bool mfaEnabled = 6;
+    optional string locale = 7;
+    optional bool verified = 8;
+    optional string email = 9;
+}
+
+message MemberObject {
+    required UserObject user = 1;
+    optional string nick = 2;
+    repeated string roles = 3;
+    required bool deaf = 4;
+    required bool mute = 5;
+}
+
+message GuildObject {
+    required string id = 1;
+    required string name = 2;
+    optional string icon = 3;
+    optional string splash = 4;
+    required string ownerID = 6;
+    required string region = 8;
+    required string afkChannelId = 9;
+    required uint32 afkTimeout = 10;
+    optional bool embedEnabled = 11;
+    optional string embedChannelId = 12;
+    required uint32 verificationLevel = 13;
+    required uint32 defaultMessageNotifications = 14;
+
+
+    // fields used when GuildObject is used in the context of a MemberObject
+    optional bool owner = 5;
+    optional uint32 UserPermission = 7;
+}
+
 message ChannelObject {
     required string id = 1;
     required uint32 type = 2;
@@ -105,6 +158,21 @@ message ChannelObject {
     optional uint32 userLimit = 11;
     optional uint32 rateLimitPerUser = 12;
 
+
+}
+
+message MessageObject {
+    required string channelID = 1;
+    required string messageID = 2;
+    required string userID = 3;
+    required string content = 4;
+
+    optional string guildID = 5;
+    optional bool pinned = 6;
+    optional uint32 type = 7;
+    optional string webhookID = 8;
+    optional string editedTimestamp = 9;
+    optional bool mentionEveryone = 10;
 
 }
 
