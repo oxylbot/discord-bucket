@@ -1,23 +1,26 @@
 syntax = "proto2"; //Specify proto2 version.
 
 service DiscordAPI {
-    rpc SendMessage(SendMessageRequest) returns (MessageResponse);
-    rpc EditMessage(EditMessageRequest) returns (MessageResponse);
+    rpc GetChannel(GetChannelRequest) returns (ChannelResponse);
+    rpc EditChannel(EditChannelRequest) returns (ChannelResponse)
+    rpc SendMessage(stream SendMessageRequest) returns (MessageResponse);
+    rpc EditMessage(stream EditMessageRequest) returns (MessageResponse);
 }
 
 // methods not 100% related to discord API
 service misc {
     rpc FileTransfer(stream File) returns (UploadStatus);
 }
+
 // Request objects
-message SendMessagePayload {
+message SendMessageRequest {
     oneof test {
-        SendMessageRequest request = 1;
+        SendMessageSubRequest request = 1;
         Attachments files = 2;
     }
 }
 
-message SendMessageRequest {
+message SendMessageSubRequest {
     required string channelID = 1;
     required string content = 2;
     required string uuid = 3;
@@ -27,10 +30,40 @@ message SendMessageRequest {
 }
 
 message EditMessageRequest {
+    oneof test {
+        EditMessageSubRequest request = 1;
+        Attachments files = 2;
+    }
+}
+
+message EditMessageSubRequest {
     required string channelID = 1;
     required string content = 2;
     required string uuid = 3;
     optional MessageEmbed embed = 4;
+}
+
+message GetChannelRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+}
+
+message EditChannelRequest {
+    // All channels
+    required string channelID = 1;
+    required string uuid = 2;
+    required string name = 3;
+    required uint32 position = 4;
+    repeated OverwriteObject permissionOverwrites = 10;
+    // Text channels
+    optional string topic = 5;
+    optional bool nsfw = 6;
+    optional uint32 rateLimitPerUser = 7;
+    // Voice channels
+    optional uint32 bitrate = 8;
+    optional uint32 userLimit = 9;
+    // Text + Voice (same as all but Category)
+    optional string parentID = 11;
 }
 
 // Response objects
@@ -47,6 +80,12 @@ message MessageResponse {
     optional bool pinned = 8;
     optional uint32 type = 9;
     optional string webhookID = 10;
+}
+
+message ChannelResponse {
+    required ChannelObject channel = 1;
+    required string uuid = 2;
+    required uint32 errorCode = 3;
 }
 
 // First class objects
