@@ -1,0 +1,152 @@
+syntax = "proto2"; //Specify proto2 version.
+
+service DiscordAPI {
+    rpc SendMessage(SendMessageRequest) returns (MessageResponse);
+    rpc EditMessage(EditMessageRequest) returns (MessageResponse);
+}
+
+// methods not 100% related to discord API
+service misc {
+    rpc FileTransfer(stream File) returns (UploadStatus);
+}
+// Request objects
+message SendMessagePayload {
+    oneof test {
+        SendMessageRequest request = 1;
+        Attachments files = 2;
+    }
+}
+
+message SendMessageRequest {
+    required string channelID = 1;
+    required string content = 2;
+    required string uuid = 3;
+    optional MessageEmbed embed = 4;
+    optional string payload_json = 5;
+    optional bool tts = 6;
+}
+
+message EditMessageRequest {
+    required string channelID = 1;
+    required string content = 2;
+    required string uuid = 3;
+    optional MessageEmbed embed = 4;
+}
+
+// Response objects
+
+message MessageResponse {
+    required uint32 errorCode = 1;
+    required string uuid = 2;
+    required string channelID = 3;
+    required string messageID = 4;
+    required string userID = 5;
+    required string content = 6;
+
+    optional string guildID = 7;
+    optional bool pinned = 8;
+    optional uint32 type = 9;
+    optional string webhookID = 10;
+}
+
+// First class objects
+
+message ChannelObject {
+    required string id = 1;
+    required uint32 type = 2;
+
+    optional string guildID = 3;
+    optional uint32 position = 4;
+    repeated OverwriteObject permissionOverwrite = 5;
+    optional string name = 6;
+    optional string topic = 7;
+    optional bool nsfw = 8;
+    optional string lastMessageID = 9;
+    optional uint32 bitrate = 10;
+    optional uint32 userLimit = 11;
+    optional uint32 rateLimitPerUser = 12;
+
+
+}
+
+message MessageEmbed {
+    optional string title = 1;
+    optional string type = 2;
+    optional string description = 4;
+    optional string url = 5;
+    optional uint64 timestamp = 6;
+    optional uint32 color = 7;
+    optional MessageEmbedFooter footer = 8;
+    optional MessageEmbedImage image = 9;
+    optional MessageEmbedThumbnail thumbnail = 10;
+    optional MessageEmbedVideo video = 11;
+    optional MessageEmbedAuthor author = 12;
+    repeated MessageEmbedField fields = 13;
+}
+
+// Second tier objects
+message Attachments {
+    repeated Attachment attachments = 1;
+}
+
+message Attachment {
+    required bytes file = 1;
+}
+
+message File {
+    required string uuid = 1;
+    required bytes file = 2;
+}
+
+message UploadStatus {
+    required string uuid = 1;
+    required uint32 errorCode = 2;
+}
+
+message OverwriteObject {
+    required string id = 1;
+    required string type = 2;
+    required uint32 allow = 3;
+    required uint32 deny = 4;
+}
+
+
+message MessageEmbedFooter {
+    required string text = 1;
+    optional string icon_url = 2;
+    optional string proxy_icon = 3;
+}
+
+message MessageEmbedImage {
+    optional string url = 1;
+    optional string proxy_url = 2;
+    optional int32 height = 3;
+    optional int32 width = 4;
+}
+
+message MessageEmbedThumbnail {
+    optional string url = 1;
+    optional string proxy_url = 2;
+    optional int32 height = 3;
+    optional int32 width = 4;
+}
+
+message MessageEmbedVideo {
+    optional string url = 1;
+    optional int32 height = 3;
+    optional int32 width = 4;
+}
+
+message MessageEmbedAuthor {
+    optional string name = 1;
+    optional string url = 2;
+    optional string icon_url = 3;
+    optional string proxy_icon_url = 4;
+}
+
+message MessageEmbedField {
+    required string name = 1;
+    required string value = 2;
+    optional bool inline = 3;
+}
+
