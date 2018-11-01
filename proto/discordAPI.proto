@@ -21,7 +21,7 @@ service misc {
 message SendMessageRequest {
     oneof test {
         SendMessageSubRequest request = 1;
-        Attachments files = 2;
+        Files files = 2;
     }
 }
 
@@ -133,10 +133,25 @@ message GuildObject {
     required string afkChannelId = 9;
     required uint32 afkTimeout = 10;
     optional bool embedEnabled = 11;
-    optional string embedChannelId = 12;
+    optional string embedChannelID = 12;
     required uint32 verificationLevel = 13;
     required uint32 defaultMessageNotifications = 14;
-
+    required uint32 explicitContentFilter = 15;
+    repeated RoleObject roles = 16;
+    repeated EmojiObject emojis = 17;
+    repeated string features = 18;
+    required uint32 mfaLevel = 19;
+    optional string applicationID = 20;
+    optional bool widgetEnabled = 21;
+    optional string widgetChannelID = 22;
+    required string systemChannelID = 23;
+    optional string joinedAt = 24;
+    optional bool large = 25;
+    optional bool unavailable = 26;
+    repeated VoiceStateObject voiceStates = 27;
+    repeated MemberObject members = 28;
+    repeated ChannelObject channels = 29;
+    repeated PresenceUpdateObject presences = 30;
 
     // fields used when GuildObject is used in the context of a MemberObject
     optional bool owner = 5;
@@ -161,6 +176,87 @@ message ChannelObject {
 
 }
 
+message RoleObject {
+    required string id = 1;
+    required string name = 2;
+    required uint32 color = 3;
+    required bool hoist = 4;
+    required uint32 position = 5;
+    required uint32 permissions = 6;
+    required bool managed = 7;
+    required bool mentionable = 8;
+}
+
+message EmojiObject {
+    required string id = 1;
+    required string name = 2;
+    repeated RoleObject roles = 3;
+    optional UserObject user = 4;
+    optional bool requireColons = 5;
+    optional bool managed = 6;
+    optional bool animated = 7;
+}
+
+message VoiceStateObject {
+    optional string guildID = 1;
+    required string channelID = 2;
+    required string userID = 3;
+    optional MemberObject member = 4;
+    required string sessionID = 5;
+    required bool deaf = 6;
+    required bool mute = 7;
+    required bool selfDeaf = 8;
+    required bool selfMute = 9;
+    required bool suppress = 10;
+}
+
+message PresenceUpdateObject {
+    required UserObject user = 1;
+    repeated string roles = 2;
+    optional ActivityObject game = 3;
+    required string guildID = 4;
+    required string status = 5;
+    repeated ActivityObject activities = 6;
+}
+
+message ActivityObject {
+    required string name = 1;
+    required uint32 type = 2;
+    optional string url = 3;
+    optional ActivityTimestampsObject timestamps = 4;
+    optional string applicationID = 5;
+    optional string details = 6;
+    optional string state = 7;
+    optional ActivityPartyObject party = 8;
+    optional ActivityAssetsObject asset = 9;
+    optional ActivitySecretsObject secrets = 10;
+    optional bool instance = 11;
+    optional uint32 flags = 12;
+}
+
+message ActivityTimestampsObject {
+    optional uint32 start = 1;
+    optional uint32 end = 2;
+}
+
+message ActivityPartyObject {
+    optional string id = 1;
+    repeated uint32 size = 2;
+}
+
+message ActivityAssetsObject {
+    optional string largeImage = 1;
+    optional string largeText = 2;
+    optional string smallImage = 3;
+    optional string smallText = 4;
+}
+
+message ActivitySecretsObject {
+    optional string join = 1;
+    optional string spectate = 2;
+    optional string match = 3;
+}
+
 message MessageObject {
     required string channelID = 1;
     required string messageID = 2;
@@ -173,10 +269,15 @@ message MessageObject {
     optional string webhookID = 8;
     optional string editedTimestamp = 9;
     optional bool mentionEveryone = 10;
+    repeated UserObject mentions = 11;
+    repeated RoleObject mentionRoles = 12;
+    repeated Attachment attachments = 13;
+    repeated MessageEmbedObject embeds = 14;
+    repeated ReactionObject reactions = 15;
 
 }
 
-message MessageEmbed {
+message MessageEmbedObject {
     optional string title = 1;
     optional string type = 2;
     optional string description = 4;
@@ -192,17 +293,45 @@ message MessageEmbed {
 }
 
 // Second tier objects
+message MessageActivityObject {
+    required uint32 type = 1;
+    optional string partyID = 2;
+}
+
+message MessageApplicationObject {
+    required string id = 1;
+    required string coverImage = 2;
+    required string description = 3;
+    required string icon = 4;
+    required string name = 5;
+}
+
+message ReactionObject {
+    required uint32 count = 1;
+    required bool me = 2;
+    required EmojiObject emoji = 3;
+}
+
 message Attachments {
     repeated Attachment attachments = 1;
 }
 
 message Attachment {
-    required bytes file = 1;
+    required string id = 1;
+    required string filename = 2;
+    required uint32 size = 3;
+    required string url = 4;
+    required string proxyURL = 5;
+    optional uint32 height = 6;
+    optional uint32 width = 7;
+}
+
+message Files {
+    repeated File files = 1;
 }
 
 message File {
-    required string uuid = 1;
-    required bytes file = 2;
+    required bytes file = 1;
 }
 
 message UploadStatus {
