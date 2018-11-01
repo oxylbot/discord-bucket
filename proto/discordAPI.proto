@@ -2,14 +2,20 @@ syntax = "proto2"; //Specify proto2 version.
 
 service DiscordAPI {
     // channel getters/setters
-    rpc GetChannel(GetChannelRequest) returns (ChannelResponse);
-    rpc EditChannel(EditChannelRequest) returns (ChannelResponse);
-    rpc DeleteChannel(DeleteChannelRequest) returns (ChannelResponse);
+    rpc GetChannel (GetChannelRequest) returns (ChannelResponse);
+    rpc EditChannel (EditChannelRequest) returns (ChannelResponse);
+    rpc DeleteChannel (DeleteChannelRequest) returns (ChannelResponse);
 
     // message getters/setters
-    rpc GetChannelMessages(GetChannelMessagesRequest) returns (MessagesResponse)
-    rpc SendMessage(stream SendMessageRequest) returns (MessageResponse);
-    rpc EditMessage(stream EditMessageRequest) returns (MessageResponse);
+    rpc GetChannelMessages (GetChannelMessagesRequest) returns (MessagesResponse);
+    rpc GetChannelMessage (GetChannelMessageRequest) returns (MessageResponse);
+    rpc CreateMessage (stream CreateMessageRequest) returns (MessageResponse);
+    rpc EditMessage (stream EditMessageRequest) returns (MessageResponse);
+    // reaction getters/setters
+    rpc CreateReaction (CreateReactionRequest) returns (EmptyResponse);
+    rpc DeleteOwnReaction (DeleteOwnReactionRequest) returns (EmptyResponse);
+    rpc DeleteUserReaction (DeleteUserReactionRequest) returns (EmptyResponse);
+    rpc GetReactions (GetReactionsRequest) returns
 }
 
 // methods not 100% related to discord API
@@ -18,18 +24,18 @@ service misc {
 }
 
 // Request objects
-message SendMessageRequest {
+message CreateMessageRequest {
     oneof test {
-        SendMessageSubRequest request = 1;
+        CreateMessageSubRequest request = 1;
         Files files = 2;
     }
 }
 
-message SendMessageSubRequest {
+message CreateMessageSubRequest {
     required string channelID = 1;
     required string content = 2;
     required string uuid = 3;
-    optional MessageEmbed embed = 4;
+    optional MessageEmbedObject embed = 4;
     optional string payload_json = 5;
     optional bool tts = 6;
 }
@@ -37,7 +43,7 @@ message SendMessageSubRequest {
 message EditMessageRequest {
     oneof test {
         EditMessageSubRequest request = 1;
-        Attachments files = 2;
+        Files files = 2;
     }
 }
 
@@ -45,7 +51,7 @@ message EditMessageSubRequest {
     required string channelID = 1;
     required string content = 2;
     required string uuid = 3;
-    optional MessageEmbed embed = 4;
+    optional MessageEmbedObject embed = 4;
 }
 
 message GetChannelRequest {
@@ -75,24 +81,57 @@ message DeleteChannelRequest {
     required string channelID = 1;
     required string uuid = 2;
 }
+
+message GetChannelMessageRequest {
+    required string channelID = 1;
+    required string messageID = 2;
+    required string uuid = 3;
+}
+
+message GetChannelMessagesRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    oneof test {
+        string around = 3;
+        string before = 4;
+        string after = 5;
+    }
+    optional uint32 limit = 6;
+}
+
+message CreateReactionRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string messageID = 3;
+    required string emoji = 4;
+}
+
+message DeleteOwnReactionRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string messageID = 3;
+    required string emoji = 4;
+}
+
+message DeleteUserReactionRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string messageID = 3;
+    required string emoji = 4;
+    required string userID = 5;
+}
 // Response objects
 
 message MessagesResponse {
-
+    required uint32 errorCode = 1;
+    required string uuid = 2;
+    repeated MessageObject message = 3;
 }
 
 message MessageResponse {
     required uint32 errorCode = 1;
     required string uuid = 2;
-    required string channelID = 3;
-    required string messageID = 4;
-    required string userID = 5;
-    required string content = 6;
-
-    optional string guildID = 7;
-    optional bool pinned = 8;
-    optional uint32 type = 9;
-    optional string webhookID = 10;
+    required MessageObject message = 3;
 }
 
 message ChannelResponse {
@@ -101,6 +140,10 @@ message ChannelResponse {
     required uint32 errorCode = 3;
 }
 
+message EmptyResponse {
+    required string uuid = 1;
+    required uint32 errorCode = 2;
+}
 // First class objects
 
 message UserObject {
@@ -161,7 +204,6 @@ message GuildObject {
 message ChannelObject {
     required string id = 1;
     required uint32 type = 2;
-
     optional string guildID = 3;
     optional uint32 position = 4;
     repeated OverwriteObject permissionOverwrite = 5;
@@ -172,8 +214,6 @@ message ChannelObject {
     optional uint32 bitrate = 10;
     optional uint32 userLimit = 11;
     optional uint32 rateLimitPerUser = 12;
-
-
 }
 
 message RoleObject {
@@ -234,29 +274,6 @@ message ActivityObject {
     optional uint32 flags = 12;
 }
 
-message ActivityTimestampsObject {
-    optional uint32 start = 1;
-    optional uint32 end = 2;
-}
-
-message ActivityPartyObject {
-    optional string id = 1;
-    repeated uint32 size = 2;
-}
-
-message ActivityAssetsObject {
-    optional string largeImage = 1;
-    optional string largeText = 2;
-    optional string smallImage = 3;
-    optional string smallText = 4;
-}
-
-message ActivitySecretsObject {
-    optional string join = 1;
-    optional string spectate = 2;
-    optional string match = 3;
-}
-
 message MessageObject {
     required string channelID = 1;
     required string messageID = 2;
@@ -293,6 +310,30 @@ message MessageEmbedObject {
 }
 
 // Second tier objects
+
+message ActivityTimestampsObject {
+    optional uint32 start = 1;
+    optional uint32 end = 2;
+}
+
+message ActivityPartyObject {
+    optional string id = 1;
+    repeated uint32 size = 2;
+}
+
+message ActivityAssetsObject {
+    optional string largeImage = 1;
+    optional string largeText = 2;
+    optional string smallImage = 3;
+    optional string smallText = 4;
+}
+
+message ActivitySecretsObject {
+    optional string join = 1;
+    optional string spectate = 2;
+    optional string match = 3;
+}
+
 message MessageActivityObject {
     required uint32 type = 1;
     optional string partyID = 2;
