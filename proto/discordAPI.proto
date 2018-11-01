@@ -11,11 +11,19 @@ service DiscordAPI {
     rpc GetChannelMessage (GetChannelMessageRequest) returns (MessageResponse);
     rpc CreateMessage (stream CreateMessageRequest) returns (MessageResponse);
     rpc EditMessage (stream EditMessageRequest) returns (MessageResponse);
+    rpc DeleteMessage (DeleteMessageRequest) returns (EmptyResponse);
+    rpc BulkDeleteMessages (BulkDeleteMessagesRequest) returns (EmptyResponse)
     // reaction getters/setters
     rpc CreateReaction (CreateReactionRequest) returns (EmptyResponse);
     rpc DeleteOwnReaction (DeleteOwnReactionRequest) returns (EmptyResponse);
     rpc DeleteUserReaction (DeleteUserReactionRequest) returns (EmptyResponse);
-    rpc GetReactions (GetReactionsRequest) returns
+    rpc GetReactions (GetReactionsRequest) returns (UsersResponse);
+    rpc DeleteAllReactions (DeleteAllReactionsRequest) returns (EmptyResponse);
+    // permissions
+    rpc EditChannelPermissions (EditChannelPermissionsRequest) returns (EmptyResponse);
+
+    // Invites
+    rpc GetChannelInvites (GetChannelInvitesRequest) returns (InvitesResponse)
 }
 
 // methods not 100% related to discord API
@@ -120,7 +128,57 @@ message DeleteUserReactionRequest {
     required string emoji = 4;
     required string userID = 5;
 }
+
+message GetReactionsRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string messageID = 3;
+    required string emoji = 4;
+    oneof test {
+        string before = 5;
+        string after = 6;
+    }
+    optional uint32 limit = 7;
+
+}
+
+message DeleteAllReactionsRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string messageID = 3;
+    required string emoji = 4;
+}
+
+message DeleteMessageRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string messageID = 3;
+}
+
+message BulkDeleteMessagesRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    repeated string messages = 3;
+}
+
+message EditChannelPermissionsRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string overwriteID = 3;
+    required uint32 allow = 4;
+    required uint32 deny = 5;
+}
+
+message GetChannelInvitesRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+}
 // Response objects
+message UsersResponse {
+    required uint32 errorCode = 1;
+    required string uuid = 2;
+    repeated UserObject users = 3;
+}
 
 message MessagesResponse {
     required uint32 errorCode = 1;
@@ -131,11 +189,11 @@ message MessagesResponse {
 message MessageResponse {
     required uint32 errorCode = 1;
     required string uuid = 2;
-    required MessageObject message = 3;
+    optional MessageObject message = 3;
 }
 
 message ChannelResponse {
-    required ChannelObject channel = 1;
+    optional ChannelObject channel = 1;
     required string uuid = 2;
     required uint32 errorCode = 3;
 }
@@ -144,7 +202,21 @@ message EmptyResponse {
     required string uuid = 1;
     required uint32 errorCode = 2;
 }
+
+message InvitesResponse {
+    required string uuid = 1;
+    required uint32 errorCode = 2;
+    repeated InviteObject invites = 3;
+}
 // First class objects
+
+message InviteObject {
+    required string code = 1;
+    optional GuildObject guild = 2;
+    required ChannelObject channel = 3;
+    optional uint32 approximatePresenceCount = 4;
+    optional uint32 approximateMemberCount = 5;
+}
 
 message UserObject {
     required string id = 1;
@@ -310,6 +382,15 @@ message MessageEmbedObject {
 }
 
 // Second tier objects
+message InviteMetadataObject {
+    required UserObject inviter = 1;
+    required uint32 uses = 2;
+    required uint32 maxUses = 3;
+    required uint32 maxAge = 4;
+    required bool temporary = 5;
+    required uint32 createdAt = 6;
+    required bool revoked = 7;
+}
 
 message ActivityTimestampsObject {
     optional uint32 start = 1;
