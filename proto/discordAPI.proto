@@ -27,6 +27,21 @@ service DiscordAPI {
     // Typing
     rpc TriggerTypingIndicator (TriggerTypingIndicatorRequest) returns (EmptyResponse);
     // Pinned
+    rpc GetPinnedMessages (GetPinnedMessagesRequest) returns (MessagesResponse)
+    rpc AddPinnedChannelMessage (AddPinnedChannelMessageRequest) returns (EmptyResponse)
+    rpc DeletePinnedChannelMessage (DeletePinnedChannelMessageRequest) returns (EmptyResponse)
+    // Group DM
+    rpc GroupDMAddRecipient (GroupDMAddRecipientRequest) returns (EmptyResponse)
+    // Emoji
+    rpc ListGuildEmojis (ListGuildEmojisRequest) returns (EmojisResponse)
+    rpc GetGuildEmoji (GetGuildEmojiRequest) returns (EmojiResponse)
+    rpc CreateGuildEmoji (stream CreateGuildEmojiRequest) returns (EmojiResponse)
+    rpc ModifyGuildEmoji (ModifyGuildEmojiRequest) returns (EmojiResponse)
+    rpc DeleteGuildEmoji (DeleteGuildEmojiRequest) returns (EmptyResponse)
+    // Guild
+    rpc CreateGuild (stream CreateGuildRequest) returns (GuildResponse)
+    rpc GetGuild (GetGuildRequest) returns (GuildResponse)
+    rpc ModifyGuild (stream ModifyGuildRequest) returns (GuildResponse)
 }
 
 // methods not 100% related to discord API
@@ -196,47 +211,183 @@ message TriggerTypingIndicatorRequest {
     required string channelID = 1;
     required string uuid = 2;
 }
+
+message GetPinnedMessagesRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+}
+
+message AddPinnedChannelMessageRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string messageID = 3;
+}
+
+message DeletePinnedChannelMessageRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string messageID = 3;
+}
+
+message GroupDMAddRecipientRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string userID = 3;
+    required string accessToken = 4;
+    optional string nick = 5;
+}
+
+message ListGuildEmojisRequest {
+    required string guildID = 1;
+    required string uuid = 2;
+}
+
+message GetGuildEmojiRequest {
+    required string guildID = 1;
+    required string uuid = 2;
+    required string emojiID = 3;
+}
+
+message CreateGuildEmojiRequest {
+    required string uuid = 3;
+    oneof test {
+        CreateGuildEmojiSubRequest request = 1;
+        File image = 2;
+    }
+}
+
+message CreateGuildEmojiSubRequest {
+    required string name = 1;
+    repeated string roles = 2;
+}
+
+message ModifyGuildEmojiRequest {
+    required string guildID = 1;
+    required string uuid = 2;
+    required string emojiID = 3;
+    required string name = 4;
+    repeated string roles = 5;
+}
+
+message DeleteGuildEmojiRequest {
+    required string guildID = 1;
+    required string uuid = 2;
+    required string emojiID = 3;
+}
+
+message CreateGuildRequest {
+    required string uuid = 1;
+    oneof test {
+        CreateGuildSubRequest request = 2;
+        File icon = 3;
+    }
+}
+
+message CreateGuildSubRequest {
+    required string name = 1;
+    required string region = 2;
+    required uint32 verificationLevel = 3;
+    required uint32 defaultMessageNotifications = 4;
+    repeated RoleObject roles = 5;
+    repeated ChannelObject channels = 6;
+}
+
+message GetGuildRequest {
+    required string uuid = 1;
+    required string guildID = 2;
+}
+
+message ModifyGuildRequest {
+    required string uuid = 5;
+    required string guildID = 4;
+    oneof test {
+        ModifyGuildSubRequest request = 1;
+        File icon = 2;
+        File splash = 3;
+    }
+}
+
+message ModifyGuildSubRequest {
+    optional string name = 1;
+    optional string region = 2;
+    optional uint32 verificationLevel = 3;
+    optional uint32 defaultMessageNotifications = 4;
+    optional uint32 explicitContentFilter = 5;
+    optional string afkChannelID = 6;
+    optional uint32 afkTimeout = 7;
+    optional string ownerID = 8;
+    optional string systemChannelID = 9;
+}
+
 // Response objects
 // Here all the data fields are optional because we can get errors and not get the data
 message UsersResponse {
     required uint32 errorCode = 1;
     required string uuid = 2;
     repeated UserObject users = 3;
+    optional string errorMessage = 4;
 }
 
 message MessagesResponse {
     required uint32 errorCode = 1;
     required string uuid = 2;
     repeated MessageObject message = 3;
+    optional string errorMessage = 4;
 }
 
 message MessageResponse {
     required uint32 errorCode = 1;
     required string uuid = 2;
     optional MessageObject message = 3;
+    optional string errorMessage = 4;
 }
 
 message ChannelResponse {
     required string uuid = 2;
     required uint32 errorCode = 3;
     optional ChannelObject channel = 1;
+    optional string errorMessage = 4;
 }
 
 message EmptyResponse {
     required string uuid = 1;
     required uint32 errorCode = 2;
+    optional string errorMessage = 3;
 }
 
 message InvitesResponse {
     required string uuid = 1;
     required uint32 errorCode = 2;
     repeated InviteObject invites = 3;
+    optional string errorMessage = 4;
 }
 
 message InviteResponse {
     required string uuid = 1;
     required uint32 errorCode = 2;
     optional InviteObject invites = 3;
+    optional string errorMessage = 4;
+}
+
+message EmojisResponse {
+    repeated EmojiObject emojis = 1;
+    required string uuid = 2;
+    required uint32 errorCode = 3;
+    optional string errorMessage = 4;
+}
+
+message EmojiResponse {
+    required EmojiObject emoji = 1;
+    required string uuid = 2;
+    required uint32 errorCode = 3;
+    optional string errorMessage = 4;
+}
+
+message GuildResponse {
+    required string uuid = 1;
+    required GuildObject guild = 2;
+    required uint32 errorCode = 3;
+    optional string errorMessage = 4;
 }
 // First class objects
 
