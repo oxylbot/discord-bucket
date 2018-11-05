@@ -1,29 +1,32 @@
 syntax = "proto2"; //Specify proto2 version.
 
 service DiscordAPI {
-    // channel getters/setters
+    // Channel
     rpc GetChannel (GetChannelRequest) returns (ChannelResponse);
     rpc EditChannel (EditChannelRequest) returns (ChannelResponse);
     rpc DeleteChannel (DeleteChannelRequest) returns (ChannelResponse);
-
-    // message getters/setters
+    // Message
     rpc GetChannelMessages (GetChannelMessagesRequest) returns (MessagesResponse);
     rpc GetChannelMessage (GetChannelMessageRequest) returns (MessageResponse);
     rpc CreateMessage (stream CreateMessageRequest) returns (MessageResponse);
     rpc EditMessage (stream EditMessageRequest) returns (MessageResponse);
     rpc DeleteMessage (DeleteMessageRequest) returns (EmptyResponse);
     rpc BulkDeleteMessages (BulkDeleteMessagesRequest) returns (EmptyResponse)
-    // reaction getters/setters
+    // Reaction
     rpc CreateReaction (CreateReactionRequest) returns (EmptyResponse);
     rpc DeleteOwnReaction (DeleteOwnReactionRequest) returns (EmptyResponse);
     rpc DeleteUserReaction (DeleteUserReactionRequest) returns (EmptyResponse);
     rpc GetReactions (GetReactionsRequest) returns (UsersResponse);
     rpc DeleteAllReactions (DeleteAllReactionsRequest) returns (EmptyResponse);
-    // permissions
+    // Permissions
     rpc EditChannelPermissions (EditChannelPermissionsRequest) returns (EmptyResponse);
-
+    rpc DeleteChannelPermission (DeleteChannelPermission) returns (EmptyResponse);
     // Invites
     rpc GetChannelInvites (GetChannelInvitesRequest) returns (InvitesResponse)
+    rpc CreateChannelInvite (CreateChannelInviteRequest) returns (InviteResponse)
+    // Typing
+    rpc TriggerTypingIndicator (TriggerTypingIndicatorRequest) returns (EmptyResponse);
+    // Pinned
 }
 
 // methods not 100% related to discord API
@@ -173,7 +176,28 @@ message GetChannelInvitesRequest {
     required string channelID = 1;
     required string uuid = 2;
 }
+
+message CreateChannelInviteRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+    optional uint32 maxAge = 3;
+    optional uint32 maxUses = 4;
+    optional bool temporary = 5;
+    optional bool unique = 6;
+}
+
+message DeleteChannelPermission {
+    required string channelID = 1;
+    required string uuid = 2;
+    required string overwriteID = 3;
+}
+
+message TriggerTypingIndicatorRequest {
+    required string channelID = 1;
+    required string uuid = 2;
+}
 // Response objects
+// Here all the data fields are optional because we can get errors and not get the data
 message UsersResponse {
     required uint32 errorCode = 1;
     required string uuid = 2;
@@ -193,9 +217,9 @@ message MessageResponse {
 }
 
 message ChannelResponse {
-    optional ChannelObject channel = 1;
     required string uuid = 2;
     required uint32 errorCode = 3;
+    optional ChannelObject channel = 1;
 }
 
 message EmptyResponse {
@@ -207,6 +231,12 @@ message InvitesResponse {
     required string uuid = 1;
     required uint32 errorCode = 2;
     repeated InviteObject invites = 3;
+}
+
+message InviteResponse {
+    required string uuid = 1;
+    required uint32 errorCode = 2;
+    optional InviteObject invites = 3;
 }
 // First class objects
 
