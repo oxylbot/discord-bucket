@@ -20,5 +20,9 @@
     "grpc": "^1.16.1",
     "ioredis": "^4.3.0",
     "superagent": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.10.0",
+    "eslint-config-recommended": "^4.0.0"
   }
 }
