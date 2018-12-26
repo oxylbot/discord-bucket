@@ -13,6 +13,8 @@ async function init() {
 		family: 4,
 		db
 	});
+
+	require("./zmq")(redis, token);
 }
 
 init();

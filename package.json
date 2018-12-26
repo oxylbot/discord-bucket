@@ -17,12 +17,13 @@
   },
   "homepage": "https://github.com/oxylbot/discord-bucket#readme",
   "dependencies": {
-    "grpc": "^1.16.1",
     "ioredis": "^4.3.0",
-    "superagent": "^4.0.0"
+    "protobufjs": "^6.8.8",
+    "superagent": "^4.0.0",
+    "zeromq": "^5.1.0"
   },
   "devDependencies": {
-    "eslint": "^5.10.0",
+    "eslint": "^5.11.0",
     "eslint-config-recommended": "^4.0.0"
   }
 }
