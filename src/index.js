@@ -1,20 +1,31 @@
 const fs = require("fs").promises;
+const path = require("path");
+const protobuf = require("protobufjs");
 const Redis = require("ioredis");
+const RPCSocket = require("./RPCSocket");
+
+const socket = new RPCSocket(process.env.ZMQ_RPC_SOCKET_ADDRESS);
 
 async function init() {
-	const token = await fs.readFile("/etc/secrets/bot_token", "utf8");
-	const port = parseInt(await fs.readFile("/etc/secrets/redis_port", "utf8"));
-	const host = await fs.readFile("/etc/secrets/redis_host", "utf8");
-	const db = parseInt(await fs.readFile("/etc/secrets/redis_db", "utf8"));
+	const token = await fs.readFile("/etc/secrets/token.txt", "utf8");
+	const host = await fs.readFile("/etc/secrets/redis-host.txt", "utf8");
 
 	const redis = new Redis({
-		port,
+		port: parseInt(process.env.REDIS_PORT),
 		host,
 		family: 4,
-		db
+		db: parseInt(process.env.REDIS_DATABASE)
 	});
 
-	require("./zmq")(redis, token);
+	const request = require("./request")(redis, token);
+	const proto = await protobuf.load(path.resolve(__dirname, "..", "protobuf", "DiscordAPI.proto"));
+	socket.start(request, proto);
 }
+
+process.on("SIGTERM", () => {
+	socket.close();
+
+	process.exit(0);
+});
 
 init();
