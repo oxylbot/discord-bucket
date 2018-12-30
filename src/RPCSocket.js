@@ -14,7 +14,7 @@ class RPCSocket {
 		this.request = request;
 		this.proto = proto;
 
-		this.socket.bind(this.address);
+		this.socket.connect(this.address);
 	}
 
 	close() {
