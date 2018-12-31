@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package discord.channels.delete;
+
+message Request {
+    required string channel_id = 1;
+    optional string reason = 2;
+}

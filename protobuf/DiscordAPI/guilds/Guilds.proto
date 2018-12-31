@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+import public "./Get.proto";
+import public "./Edit.proto";
+import public "./GetChannels.proto";
+import public "./CreateChannel.proto";
+import public "./EditRole.proto";
+import public "./BanMember.proto";
+import public "./GetBan.proto";
+import public "./GetBans.proto";
+import public "./AddMemberRole.proto";
+import public "./RemoveMemberRole.proto";
+import public "./EditMember.proto";
+import public "./GetMembers.proto";
+import public "./GetMember.proto";
+import public "./KickMember.proto";
+import public "./UnbanMember.proto";
+import public "./GetRoles.proto";
+import public "./CreateRole.proto";
+import public "./DeleteRole.proto";
+
+package discord.guilds;

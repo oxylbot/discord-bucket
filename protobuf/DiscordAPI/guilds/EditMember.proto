@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package discord.guilds.editMember;
+
+message Request {
+    required string guild_id = 1;
+    required string user_id = 2;
+    optional string nick = 3;
+    optional bool mute = 4;
+    optional bool deaf = 5;
+    optional string channel_id = 6;
+    optional string reason = 7;
+}

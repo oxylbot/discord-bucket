@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+package discord.guilds.edit;
+
+message Request {
+    required string guild_id = 1;
+    optional string name = 2;
+    optional string region = 3;
+    optional uint32 verification_level = 4;
+    optional uint32 default_message_notifications = 5;
+    optional uint32 explicit_content_filter = 56;
+    optional string afk_channel_id = 7;
+    optional uint32 afk_timeout = 8;
+    optional string icon = 9;
+    optional string owner_id = 10;
+    optional string splash = 11;
+    optional string system_channel_id = 12;
+    optional string reason = 13;
+}

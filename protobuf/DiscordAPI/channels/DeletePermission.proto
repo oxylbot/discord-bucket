@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+package discord.channels.deletePermission;
+
+message Request {
+    required string channel_id = 1;
+    required string overwrite_id = 2;
+    optional string reason = 3;
+}

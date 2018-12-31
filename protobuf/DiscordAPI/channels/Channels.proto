@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+import public "./Get.proto";
+import public "./Edit.proto";
+import public "./Delete.proto";
+import public "./GetMessage.proto";
+import public "./GetMessages.proto";
+import public "./CreateMessage.proto";
+import public "./CreateReaction.proto";
+import public "./DeleteReaction.proto";
+import public "./GetReactions.proto";
+import public "./DeleteAllReactions.proto";
+import public "./EditMessage.proto";
+import public "./DeleteMessage.proto";
+import public "./BulkDeleteMessages.proto";
+import public "./EditPermission.proto";
+import public "./DeletePermission.proto";
+import public "./TriggerTyping.proto";
+
+package discord.channels;
+

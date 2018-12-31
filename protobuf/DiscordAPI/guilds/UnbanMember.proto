@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+package discord.guilds.unbanMember;
+
+message Request {
+    required string guild_id = 1;
+    required string user_id = 2;
+    optional string reason = 3;
+}
