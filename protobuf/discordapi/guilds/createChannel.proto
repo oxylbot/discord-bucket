@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+import "../types.proto";
+
+package discord.guilds.createChannel;
+
+message Request {
+    required string name = 1;
+    optional uint32 type = 2;
+    optional string topic = 3;
+    optional uint32 bitrate = 4;
+    optional uint32 user_limit = 5;
+    optional uint32 rate_limit_per_user = 6;
+    optional uint32 position = 7;
+    repeated discord.types.Overwrite permission_overwrites = 8;
+    optional string parent_id = 9;
+    optional bool nsfw = 10;
+    optional string reason = 11;
+}

@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+package discord.channels.get;
+
+message Request {
+	required string channel_id = 1;
+}

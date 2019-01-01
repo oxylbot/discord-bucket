@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+import "../types.proto";
+
+package discord.guilds.getChannels;
+
+message Request {
+    required string guild_id = 1;
+}
+
+message Response {
+    repeated discord.types.Channel channels = 1;
+}

@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+import "../types.proto";
+
+package discord.channels.getMessages;
+
+message Request {
+	required string channel_id = 1;
+    optional string around = 2;
+    optional string before = 3;
+    optional string after = 4;
+    optional uint32 limit = 5 [default = 50];
+}
+
+message Response {
+    repeated discord.types.Message messages = 1;
+}

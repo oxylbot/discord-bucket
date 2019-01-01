@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+import "../types.proto";
+
+package discord.channels.getReactions;
+
+message Request {
+    required string channel_id = 1;
+    required string message_id = 2;
+    required string emoji = 3;
+    optional string before = 4;
+    optional string after = 5;
+    optional uint32 limit = 6 [default = 25];
+}
+
+message Response {
+    repeated discord.types.Reaction reactions = 1;
+}

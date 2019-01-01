@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+import "../types.proto";
+
+package discord.guilds.getMembers;
+
+message Request {
+    required string guild_id = 1;
+    optional string after = 2;
+    optional uint32 limit = 3 [default = 1];
+}
+
+message Response {
+    repeated discord.types.Member members = 1;
+}

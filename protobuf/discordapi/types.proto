@@ -1,0 +1,145 @@
+syntax = "proto2";
+
+package discord.types;
+
+message Empty {}
+
+message HTTPError {
+    required uint32 status = 1;
+    required uint32 code = 2;
+    required string message = 3;
+}
+
+message Ban {
+    required User user = 1;
+    optional string reason = 2;
+}
+
+message User {
+    required string id = 1;
+    required string username = 2;
+    required string discriminator = 3;
+    optional string avatar = 4;
+    optional bool bot = 5 [default = false];
+}
+
+message Member {
+    required User user = 1;
+    optional string nick = 2;
+    repeated string roles = 3;
+    required string joined_at = 4;
+}
+
+message Guild {
+    required string id = 1;
+    required string name = 2;
+    optional string icon = 3;
+    optional string splash = 4;
+    required string owner_id = 5;
+    optional uint64 permissions = 6;
+    required string region = 7;
+    optional uint32 member_count = 8;
+    repeated Role roles = 9;
+    repeated Member members = 10;
+    repeated Channel channels = 11;
+}
+
+message Role {
+    required string id = 1;
+    required string name = 2;
+    required uint32 color = 3;
+    required bool hoist = 4;
+    required uint32 position = 5;
+    required uint64 permissions = 6;
+    required bool mentionable = 7;
+}
+
+message File {
+    required string name = 1;
+    required bytes file = 2;
+}
+
+message Channel {
+    required string id = 1;
+    required uint32 type = 2;
+    optional string guild_id = 3;
+    optional uint32 position = 4;
+    repeated Overwrite permission_overwrites = 5;
+    optional string name = 6;
+    optional string topic = 7;
+    optional bool nsfw = 8;
+    optional uint32 bitrate = 9;
+    optional uint32 user_limit = 10;
+    optional string parent_id = 11;
+}
+
+message Message {
+    required string id = 1;
+    required string channel_id = 2;
+    optional string guild_id = 3;
+    required string author_id = 4;
+    required string content = 5;
+    repeated Attachment attachments = 6;
+    required bool pinned = 7;
+    repeated Reaction reactions = 8;
+}
+
+message Reaction {
+    required uint32 count = 1;
+    required string emoji_id = 2;
+    required string emoji_name = 3;
+}
+
+message Overwrite {
+    required uint32 id = 1;
+    required string type = 2;
+    required uint64 allow = 3;
+    required uint64 deny = 4;
+}
+
+message Embed {
+    optional string title = 1;
+    optional string description = 2;
+    optional string url = 3;
+    optional string timestamp = 4;
+    optional uint32 color = 5;
+    optional EmbedFooter footer = 6;
+    optional EmbedImage image = 7;
+    optional EmbedThumbnail thumbnail = 8;
+    optional EmbedAuthor author = 9;
+    repeated EmbedFields fields = 10;
+}
+
+message EmbedFooter {
+    required string text = 1;
+    optional string icon_url = 2;
+}
+
+message EmbedImage {
+    required string url = 1;
+}
+
+message EmbedThumbnail {
+    required string url = 1;
+}
+
+message EmbedAuthor {
+    optional string name = 1;
+    optional string url = 2;
+    optional string icon_url = 3;
+}
+
+message EmbedFields {
+    required string name = 1;
+    required string value = 2;
+    optional bool inline = 3 [default = true];
+}
+
+message Attachment {
+    required string id = 1;
+    required string filename = 2;
+    required uint32 size = 3;
+    required string url = 4;
+    optional uint32 height = 5;
+    optional uint32 width = 6;
+}
