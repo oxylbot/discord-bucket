@@ -1,7 +1,0 @@
-syntax = "proto2";
-
-package discord.guilds.get;
-
-message Request {
-    required string guild_id = 1;
-}

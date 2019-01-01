@@ -1,6 +1,0 @@
-syntax = "proto2";
-
-import public "./Get.proto";
-import public "./CreateDM.proto";
-
-package discord.users;
