@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/oxylbot/discord-bucket.git"
   },
-  "author": "minemidnight",
+  "author": "oxylbot",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/oxylbot/discord-bucket/issues"
