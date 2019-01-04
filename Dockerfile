@@ -1,4 +1,4 @@
-FROM node:10.12.0-jessie
+FROM node:10.15.0-jessie
 
 ARG NODE_ENV
 
