@@ -7,7 +7,7 @@ const socket = new RequestSocket(process.env.BUCKET_SOCKET_ADDRESS);
 async function init() {
 	const rpcProto = await protobuf.load(path.resolve(__dirname, "..", "protobuf", "rpcWrapper.proto"));
 	const discordProto = await protobuf.load(
-		path.resolve(__dirname, "..", "protobuf", "discordaPI", "service.proto")
+		path.resolve(__dirname, "..", "protobuf", "discordapi", "service.proto")
 	);
 
 	socket.start({
