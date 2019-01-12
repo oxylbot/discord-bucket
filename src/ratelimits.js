@@ -1,4 +1,4 @@
-const Redis = require("ioredis-mock");
+const Redis = require("ioredis");
 const { version } = require("../package");
 
 const redis = new Redis({
