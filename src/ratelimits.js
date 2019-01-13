@@ -3,7 +3,7 @@ const { version } = require("../package");
 
 const redis = new Redis({
 	port: +process.env.REDIS_PORT,
-	host: process.env.HOST,
+	host: process.env.REDIS_HOST,
 	family: 4,
 	db: +process.env.REDIS_DATABASE
 });
