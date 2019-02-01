@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+message Request {
+	required string id = 1;
+	required string name = 2;
+	required string request_type = 3;
+	required bytes data = 4;
+}
+
+message Response {
+	required string id = 1;
+	required string response_type = 2;
+	required bytes data = 3;
+}

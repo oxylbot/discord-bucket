@@ -1,0 +1,51 @@
+syntax = "proto2";
+
+import "types.proto";
+import "gateway.proto";
+import "channels/main.proto";
+import "guilds/main.proto";
+import "users/main.proto";
+
+package discord.service;
+
+service DiscordAPI {
+    rpc GetGateway(discord.types.Empty) returns (discord.gateway.Response);
+    rpc GetChannel(discord.channels.get.Request) returns (discord.types.Channel);
+    rpc EditChannel(discord.channels.edit.Request) returns (discord.types.Channel);
+    rpc DeleteChannel(discord.channels.delete.Request) returns (discord.types.Channel);
+    rpc GetChannelMessage(discord.channels.getMessage.Request) returns (discord.types.Message);
+    rpc GetChannelMessages(discord.channels.getMessages.Request) returns (discord.channels.getMessages.Response);
+    rpc CreateChannelMessage(discord.channels.createMessage.Request) returns (discord.types.Message);
+    rpc CreateReaction(discord.channels.createReaction.Request) returns (discord.types.Empty);
+    rpc DeleteReaction(discord.channels.deleteReaction.Request) returns (discord.types.Empty);
+    rpc GetReactions(discord.channels.getReactions.Request) returns (discord.channels.getReactions.Response);
+    rpc DeleteAllReactions(discord.channels.deleteAllReactions.Request) returns (discord.types.Empty);
+    rpc EditMesssage(discord.channels.editMessage.Request) returns (discord.types.Message);
+    rpc DeleteMessage(discord.channels.deleteMessage.Request) returns (discord.types.Empty);
+    rpc BulkDeleteMessages(discord.channels.bulkDeleteMessages.Request) returns (discord.types.Empty);
+    rpc EditChannelPermission(discord.channels.editPermission.Request) returns (discord.types.Empty);
+    rpc DeleteChannelPermission(discord.channels.deletePermission.Request) returns (discord.types.Empty);
+    rpc TriggerTypingIndicator(discord.channels.triggerTyping.Request) returns (discord.types.Empty);
+
+    rpc GetGuild(discord.guilds.get.Request) returns (discord.types.Guild);
+    rpc EditGuild(discord.guilds.edit.Request) returns (discord.types.Guild);
+    rpc GetGuildChannels(discord.guilds.getChannels.Request) returns (discord.guilds.getChannels.Response);
+    rpc CreateGuildChannel(discord.guilds.createChannel.Request) returns (discord.types.Channel);
+    rpc GetGuildMember(discord.guilds.getMember.Request) returns (discord.types.Member);
+    rpc GetGuildMembers(discord.guilds.getMembers.Request) returns (discord.guilds.getMembers.Response);
+    rpc EditGuildMember(discord.guilds.editMember.Request) returns (discord.types.Member);
+    rpc AddGuildMemberRole(discord.guilds.addMemberRole.Request) returns (discord.types.Empty);
+    rpc RemoveGuildMemberRole(discord.guilds.removeMemberRole.Request) returns (discord.types.Empty);
+    rpc KickGuildMember(discord.guilds.kickMember.Request) returns (discord.types.Empty);
+    rpc GetGuildBans(discord.guilds.getBans.Request) returns (discord.guilds.getBans.Response);
+    rpc GetGuildBan(discord.guilds.getBan.Request) returns (discord.types.Ban);
+    rpc BanGuildMember(discord.guilds.banMember.Request) returns (discord.types.Empty);
+    rpc UnbanGuildMember(discord.guilds.unbanMember.Request) returns (discord.types.Empty);
+    rpc GetGuildRoles(discord.guilds.getRoles.Request) returns (discord.guilds.getRoles.Response);
+    rpc CreateGuildRole(discord.guilds.createRole.Request) returns (discord.types.Role);
+    rpc EditGuildRole(discord.guilds.editRole.Request) returns (discord.types.Role);
+    rpc DeleteGuildRole(discord.guilds.deleteRole.Request) returns (discord.types.Empty);
+
+    rpc GetUser(discord.users.get.Request) returns (discord.types.User);
+    rpc CreateDM(discord.users.createDM.Request) returns (discord.types.Channel);
+}

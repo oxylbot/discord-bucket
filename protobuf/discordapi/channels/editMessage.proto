@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+import "../types.proto";
+
+package discord.channels.editMessage;
+
+message Request {
+    required string channel_id = 1;
+    required string message_id = 2;
+    optional string content = 3;
+    optional discord.types.Embed embed = 4;
+}

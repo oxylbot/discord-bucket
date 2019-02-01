@@ -1,20 +1,30 @@
-const fs = require("fs").promises;
-const Redis = require("ioredis");
+const path = require("path");
+const protobuf = require("protobufjs");
+
+const RequestSocket = require("./RequestSocket");
+const socket = new RequestSocket(process.env.BUCKET_SOCKET_ADDRESS);
 
 async function init() {
-	const token = await fs.readFile("/etc/secrets/bot_token", "utf8");
-	const port = parseInt(await fs.readFile("/etc/secrets/redis_port", "utf8"));
-	const host = await fs.readFile("/etc/secrets/redis_host", "utf8");
-	const db = parseInt(await fs.readFile("/etc/secrets/redis_db", "utf8"));
+	const rpcProto = await protobuf.load(path.resolve(__dirname, "..", "protobuf", "rpcWrapper.proto"));
+	const discordProto = await protobuf.load(
+		path.resolve(__dirname, "..", "protobuf", "discordapi", "service.proto")
+	);
 
-	const redis = new Redis({
-		port,
-		host,
-		family: 4,
-		db
+	socket.start({
+		discord: discordProto,
+		rpc: rpcProto
 	});
-
-	require("./zmq")(redis, token);
 }
+
+process.on("unhandledRejection", error => {
+	console.error(error.stack);
+	process.exit(1);
+});
+
+process.on("SIGTERM", () => {
+	socket.close();
+
+	process.exit(0);
+});
 
 init();

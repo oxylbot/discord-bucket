@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package discord.guilds.createRole;
+
+message Request {
+    required string guild_id = 1;
+    optional string name = 2;
+    optional uint64 permission = 3;
+    optional uint32 position = 4;
+    optional uint32 color = 5;
+    optional bool hoist = 6;
+    optional bool mentionable = 7;
+    optional string reason = 8;
+}

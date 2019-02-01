@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/oxylbot/discord-bucket.git"
   },
-  "author": "minemidnight",
+  "author": "oxylbot",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/oxylbot/discord-bucket/issues"
@@ -23,7 +23,7 @@
     "zeromq": "^5.1.0"
   },
   "devDependencies": {
-    "eslint": "^5.11.0",
-    "eslint-config-recommended": "^4.0.0"
+    "eslint": "5.12.1",
+    "eslint-config-recommended": "4.0.0"
   }
 }

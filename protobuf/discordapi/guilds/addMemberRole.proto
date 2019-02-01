@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+package discord.guilds.addMemberRole;
+
+message Request {
+    required string guild_id = 1;
+    required string user_id = 2;
+    required string role_id = 3;
+    optional string reason = 4;
+}

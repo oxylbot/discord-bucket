@@ -1,11 +1,6 @@
-sudo: required
-
-services:
- - docker
-
 language: node_js
 node_js:
- - "10.12.0"
+ - "11.6.0"
 cache: npm
 
 git:
@@ -19,9 +14,3 @@ install:
 
 script:
  - eslint . --quiet
-
-after_success:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker pull oxyl/discord-bucket:latest
-  - docker build -t oxyl/discord-bucket:latest .
-  - docker push oxyl/discord-bucket:latest

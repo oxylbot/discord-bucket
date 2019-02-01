@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+package discord.guilds.banMember;
+
+message Request {
+    required string guild_id = 1;
+    required string user_id = 2;
+    optional string reason = 3 [default = "No reason provided"];
+    optional uint32 delete_message_days = 4 [default = 0];
+}

@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+import "../types.proto";
+
+package discord.channels.edit;
+
+message Request {
+    required string channel_id = 1;
+    optional string name = 2;
+    optional uint32 position = 3;
+    optional string topic = 4;
+    optional bool nsfw = 5;
+    optional uint32 rate_limit_per_user = 6;
+    optional uint32 bitrate = 7;
+    optional uint32 user_limit = 8;
+    repeated discord.types.Overwrite permission_overwrites = 9;
+    optional string parent_id = 10;
+    optional string reason = 11;
+}

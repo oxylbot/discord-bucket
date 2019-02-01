@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package discord.channels.bulkDeleteMessages;
+
+message Request {
+    required string channel_id = 1;
+    repeated string messages = 2;
+}

@@ -1,4 +1,6 @@
-FROM node:10.12.0-jessie
+FROM node:11.9.0-alpine
+
+RUN apk add --no-cache build-base python python-dev
 
 ARG NODE_ENV
 
@@ -10,4 +12,4 @@ WORKDIR /app
 
 RUN npm install --production
 
-CMD ["npm", "start"]
+CMD ["node", "."]
