@@ -23,6 +23,7 @@ class RPCSocket {
 	async message(client, message) {
 		const request = this.proto.rpc.lookup("Request");
 		const decoded = request.decode(message);
+		console.log("Got a message", decoded);
 
 		const requestType = this.proto.discord.lookup(decoded.requestType);
 		const result = await handler(decoded.name, requestType.decode(decoded.data));
