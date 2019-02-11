@@ -12,6 +12,7 @@ class RPCSocket {
 	start(proto) {
 		this.proto = proto;
 
+		console.log(`tcp://discord-bucket-zmq-proxy:${process.env.DISCORD_BUCKET_ZMQ_PROXY_SERVICE_PORT_DEALER}`);
 		this.socket.connect(`tcp://discord-bucket-zmq-proxy:${process.env.DISCORD_BUCKET_ZMQ_PROXY_SERVICE_PORT_DEALER}`);
 	}
 
