@@ -2,7 +2,7 @@ const path = require("path");
 const protobuf = require("protobufjs");
 
 const RequestSocket = require("./RequestSocket");
-const socket = new RequestSocket(process.env.BUCKET_SOCKET_ADDRESS);
+const socket = new RequestSocket();
 
 async function init() {
 	const rpcProto = await protobuf.load(path.resolve(__dirname, "..", "protobuf", "rpcWrapper.proto"));

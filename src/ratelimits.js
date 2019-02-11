@@ -2,8 +2,8 @@ const Redis = require("ioredis");
 const { version } = require("../package");
 
 const redis = new Redis({
-	port: +process.env.REDIS_PORT,
-	host: process.env.REDIS_HOST,
+	port: +process.env.REDIS_SERVICE_PORT,
+	host: "redis",
 	family: 4,
 	db: +process.env.REDIS_DATABASE
 });

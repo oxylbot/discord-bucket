@@ -2,8 +2,7 @@ const handler = require("./request-handler");
 const zmq = require("zeromq");
 
 class RPCSocket {
-	constructor(address) {
-		this.address = address;
+	constructor() {
 		this.socket = zmq.socket("router");
 		this.socket.on("message", this.message.bind(this));
 
@@ -13,7 +12,7 @@ class RPCSocket {
 	start(proto) {
 		this.proto = proto;
 
-		this.socket.connect(this.address);
+		this.socket.connect(`tcp://discord-bucket-zmq-proxy:${process.env.DISCORD_BUCKET_ZMQ_PROXY_SERVICE_PORT_DEALER}`);
 	}
 
 	close() {
