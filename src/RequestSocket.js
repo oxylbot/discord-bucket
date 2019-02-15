@@ -5,6 +5,7 @@ class RPCSocket {
 	constructor() {
 		this.socket = zmq.socket("router");
 		this.socket.on("message", this.message.bind(this));
+		this.socket.monitor(undefined, 0);
 
 		this.proto = null;
 	}
