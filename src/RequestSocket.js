@@ -9,7 +9,7 @@ class RPCSocket {
 
 		["connect", "connect_delay", "connect_retry", "listen", "bind_error",
 			"accept", "accept_error", "close", "close_error", "disconnect"].forEach(evt => {
-			this.socket.on(evt, ...args => console.log(evt, args));
+			this.socket.on(evt, (...args) => console.log(evt, args));
 		});
 
 		this.proto = null;
