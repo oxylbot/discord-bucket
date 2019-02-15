@@ -7,6 +7,11 @@ class RPCSocket {
 		this.socket.on("message", this.message.bind(this));
 		this.socket.monitor(undefined, 0);
 
+		["connect", "connect_delay", "connect_retry", "listen", "bind_error",
+			"accept", "accept_error", "close", "close_error", "disconnect"].forEach(evt => {
+			this.socket.on(evt, ...args => console.log(evt, args));
+		});
+
 		this.proto = null;
 	}
 
