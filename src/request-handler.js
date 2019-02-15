@@ -128,14 +128,11 @@ const embedConverter = data => {
 };
 
 const handle = async (requestType, data) => {
-	console.log("Handling a", requestType);
 	switch(requestType) {
 		case "GetGateway": {
-			console.log("gateway");
 			const request = endpoints.getGateway();
 
 			const resp = await ratelimit(request);
-			console.log("Resp", resp);
 			return {
 				responseType: "discord.gateway.Response",
 				data: {
@@ -693,7 +690,6 @@ module.exports = async (requestType, data) => {
 	try {
 		return await handle(requestType, data);
 	} catch(error) {
-		console.log("handle error");
 		if(error.hasOwnProperty(Symbol.for("DiscordError"))) {
 			return {
 				responseType: "discord.types.HTTPError",
