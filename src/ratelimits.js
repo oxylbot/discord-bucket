@@ -35,17 +35,14 @@ function getRoute(request) {
 
 module.exports = async request => {
 	const route = getRoute(request);
-	console.log("route", route);
 
 	const globalBlock = await redis.exists("global");
 	if(globalBlock) {
-		console.log("Global oof");
 		const ttl = await redis.pttl("global");
 		await new Promise(resolve => setTimeout(resolve, ttl));
 	} else {
 		const remaining = await redis.get(`${route}:remaining`);
 		if(remaining === 0) {
-			console.log("normal oof");
 			const ttl = await redis.pttl(`${route}:remaining`);
 			await new Promise(resolve => setTimeout(resolve, ttl));
 		}
@@ -64,7 +61,6 @@ module.exports = async request => {
 	}
 
 	if(response.status === 429) {
-		console.log("429 oof");
 		["req", "protocol", "host", "_endCallback", "_callback",
 			"_fullfilledPromise", "res", "response", "called"].forEach(key => {
 			delete request[key];
@@ -72,7 +68,6 @@ module.exports = async request => {
 
 		return await module.exports(redis, request);
 	} else if(response.status >= 400) {
-		console.log(">=400 oof");
 		if(response.body.hasOwnProperty("code")) {
 			const error = new Error(response.body.message);
 			error[Symbol.for("DiscordError")] = true;
@@ -84,7 +79,6 @@ module.exports = async request => {
 			throw response.error;
 		}
 	} else {
-		console.log("noof");
 		return response;
 	}
 };
