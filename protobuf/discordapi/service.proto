@@ -20,7 +20,7 @@ service DiscordAPI {
     rpc DeleteReaction(discord.channels.deleteReaction.Request) returns (discord.types.Empty);
     rpc GetReactions(discord.channels.getReactions.Request) returns (discord.channels.getReactions.Response);
     rpc DeleteAllReactions(discord.channels.deleteAllReactions.Request) returns (discord.types.Empty);
-    rpc EditMesssage(discord.channels.editMessage.Request) returns (discord.types.Message);
+    rpc EditMessage(discord.channels.editMessage.Request) returns (discord.types.Message);
     rpc DeleteMessage(discord.channels.deleteMessage.Request) returns (discord.types.Empty);
     rpc BulkDeleteMessages(discord.channels.bulkDeleteMessages.Request) returns (discord.types.Empty);
     rpc EditChannelPermission(discord.channels.editPermission.Request) returns (discord.types.Empty);
