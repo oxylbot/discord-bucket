@@ -228,7 +228,6 @@ const handle = async (requestType, data) => {
 
 		case "CreateChannelMessage": {
 			const request = endpoints.createChannelMessage(data.channelId);
-			console.log(data);
 
 			const body = {
 				content: data.content,
@@ -238,9 +237,8 @@ const handle = async (requestType, data) => {
 			if(data.hasOwnProperty("embed")) body.embed = embedConverter(body.embed);
 
 			if(data.hasOwnProperty("file")) {
-				console.log("is file, making form name", data.file.name);
 				request.type("form")
-					.attach(data.file.name, data.file.file)
+					.attach("file", data.file.file, data.file.name)
 					.field("payload_json", JSON.stringify(body));
 			} else {
 				request.send(body);
