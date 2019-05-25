@@ -228,6 +228,7 @@ const handle = async (requestType, data) => {
 
 		case "CreateChannelMessage": {
 			const request = endpoints.createChannelMessage(data.channelId);
+			console.log(data);
 
 			const body = {
 				content: data.content,
