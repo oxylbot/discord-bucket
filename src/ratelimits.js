@@ -8,15 +8,12 @@ const redis = new Redis({
 	db: +process.env.REDIS_DATABASE,
 	maxRetriesPerRequest: null,
 	reconnectOnError(error) {
-		console.log("ioredis", error.message, error.message.startsWith("connect ETIMEDOUT"));
 		return error.message.startsWith("connect ETIMEDOUT");
 	}
 });
 
 redis.on("error", error => {
-	console.log("ioredis", error.message, error.message.startsWith("connect ETIMEDOUT"));
 	if(error.message.startsWith("connect ETIMEDOUT")) {
-		console.log("reconnecting");
 		redis.connect();
 	}
 });
