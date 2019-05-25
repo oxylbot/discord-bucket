@@ -19,7 +19,7 @@
   "dependencies": {
     "ioredis": "^4.3.0",
     "protobufjs": "^6.8.8",
-    "superagent": "^5.0.0",
+    "superagent": "^5.0.5",
     "zeromq": "^5.1.0"
   },
   "devDependencies": {
