@@ -237,6 +237,7 @@ const handle = async (requestType, data) => {
 			if(data.hasOwnProperty("embed")) body.embed = embedConverter(body.embed);
 
 			if(data.hasOwnProperty("file")) {
+				console.log("is file, making form name", data.file.name);
 				request.type("form")
 					.attach(data.file.name, data.file.file)
 					.field("payload_json", JSON.stringify(body));
