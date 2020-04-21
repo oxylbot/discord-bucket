@@ -1,5 +1,32 @@
 {
-  "extends": [
-    "config:base"
+  "bumpVersion": "major",
+  "prCreation": "not-pending",
+  "packageRules": [
+    {
+      "datasources": [
+        "docker"
+      ]
+    },
+    {
+      "managers": [
+        "npm"
+      ],
+      "updateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "managers": [
+        "npm"
+      ],
+      "depTypeList": [
+        "devDependencies"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
+    }
   ]
 }
