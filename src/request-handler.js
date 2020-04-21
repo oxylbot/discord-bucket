@@ -1,6 +1,10 @@
 const endpoints = require("./endpoints");
 const ratelimit = require("./ratelimits");
 
+function hasProperty(obj, prop) {
+	return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
 const converter = {
 	channel(channel) {
 		return {
@@ -96,27 +100,27 @@ const converter = {
 
 const embedConverter = data => {
 	const embed = {};
-	if(data.hasOwnProperty("title")) embed.title = data.title;
-	if(data.hasOwnProperty("description")) embed.description = data.description;
-	if(data.hasOwnProperty("url")) embed.url = data.url;
-	if(data.hasOwnProperty("timestamp")) embed.timestamp = data.timestamp;
-	if(data.hasOwnProperty("color")) embed.color = data.color;
-	if(data.hasOwnProperty("image")) embed.image = { url: data.image.url };
-	if(data.hasOwnProperty("thumbnail")) embed.thumbnail = { url: data.thumbnail.url };
+	if(hasProperty(data, "title")) embed.title = data.title;
+	if(hasProperty(data, "description")) embed.description = data.description;
+	if(hasProperty(data, "url")) embed.url = data.url;
+	if(hasProperty(data, "timestamp")) embed.timestamp = data.timestamp;
+	if(hasProperty(data, "color")) embed.color = data.color;
+	if(hasProperty(data, "image")) embed.image = { url: data.image.url };
+	if(hasProperty(data, "thumbnail")) embed.thumbnail = { url: data.thumbnail.url };
 
-	if(data.hasOwnProperty("footer")) {
+	if(hasProperty(data, "footer")) {
 		embed.footer = { text: data.footer.text };
-		if(data.footer.hasOwnProperty("iconUrl")) embed.footer.icon_url = data.footer.iconUrl;
+		if(hasProperty(data.footer, "iconUrl")) embed.footer.icon_url = data.footer.iconUrl;
 	}
 
-	if(data.hasOwnProperty("author")) {
+	if(hasProperty(data, "author")) {
 		embed.author = {};
-		if(data.author.hasOwnProperty("name")) embed.author.name = data.author.name;
-		if(data.author.hasOwnProperty("url")) embed.author.url = data.author.url;
-		if(data.author.hasOwnProperty("iconUrl")) embed.author.icon_url = data.author.iconUrl;
+		if(hasProperty(data.author, "name")) embed.author.name = data.author.name;
+		if(hasProperty(data.author, "url")) embed.author.url = data.author.url;
+		if(hasProperty(data.author, "iconUrl")) embed.author.icon_url = data.author.iconUrl;
 	}
 
-	if(data.hasOwnProperty("fields")) {
+	if(hasProperty(data, "fields")) {
 		embed.fields = data.fields.map(field => ({
 			name: field.name,
 			value: field.value,
@@ -160,17 +164,17 @@ const handle = async (requestType, data) => {
 		case "EditChannel": {
 			const request = endpoints.editChannel(data.channelId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			const body = {};
-			if(data.hasOwnProperty("name")) body.name = data.name;
-			if(data.hasOwnProperty("position")) body.position = data.position;
-			if(data.hasOwnProperty("topic")) body.topic = data.topic;
-			if(data.hasOwnProperty("nsfw")) body.nsfw = data.nsfw;
-			if(data.hasOwnProperty("rateLimitPerUser")) body.rate_limit_per_user = data.rateLimitPerUser;
-			if(data.hasOwnProperty("bitrate")) body.bitrate = data.bitrate;
-			if(data.hasOwnProperty("userLimit")) body.user_limit = data.userLimit;
-			if(data.hasOwnProperty("permissionOverwrites")) {
+			if(hasProperty(data, "name")) body.name = data.name;
+			if(hasProperty(data, "position")) body.position = data.position;
+			if(hasProperty(data, "topic")) body.topic = data.topic;
+			if(hasProperty(data, "nsfw")) body.nsfw = data.nsfw;
+			if(hasProperty(data, "rateLimitPerUser")) body.rate_limit_per_user = data.rateLimitPerUser;
+			if(hasProperty(data, "bitrate")) body.bitrate = data.bitrate;
+			if(hasProperty(data, "userLimit")) body.user_limit = data.userLimit;
+			if(hasProperty(data, "permissionOverwrites")) {
 				body.permission_overwrites = data.permissionOverwrites.map(overwrite => ({
 					id: overwrite.id,
 					type: overwrite.type,
@@ -178,7 +182,7 @@ const handle = async (requestType, data) => {
 					deny: Number(overwrite.deny)
 				}));
 			}
-			if(data.hasOwnProperty("parentId")) body.parent_id = data.parentId;
+			if(hasProperty(data, "parentId")) body.parent_id = data.parentId;
 
 			request.send(body);
 
@@ -192,7 +196,7 @@ const handle = async (requestType, data) => {
 		case "DeleteChannel": {
 			const request = endpoints.deleteChannel(data.channelId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			const resp = await ratelimit(request);
 			return {
@@ -214,10 +218,10 @@ const handle = async (requestType, data) => {
 		case "GetChannelMessages": {
 			const request = endpoints.getChannelMessages(data.channelId);
 
-			if(data.hasOwnProperty("around")) request.query({ around: data.around });
-			else if(data.hasOwnProperty("before")) request.query({ before: data.before });
-			else if(data.hasOwnProperty("after")) request.query({ after: data.after });
-			if(data.hasOwnProperty("limit")) request.query({ limit: data.limit });
+			if(hasProperty(data, "around")) request.query({ around: data.around });
+			else if(hasProperty(data, "before")) request.query({ before: data.before });
+			else if(hasProperty(data, "after")) request.query({ after: data.after });
+			if(hasProperty(data, "limit")) request.query({ limit: data.limit });
 
 			const resp = await ratelimit(request);
 			return {
@@ -234,9 +238,9 @@ const handle = async (requestType, data) => {
 				tts: false
 			};
 
-			if(data.hasOwnProperty("embed")) body.embed = embedConverter(body.embed);
+			if(hasProperty(data, "embed")) body.embed = embedConverter(body.embed);
 
-			if(data.hasOwnProperty("file")) {
+			if(hasProperty(data, "file")) {
 				request.type("form")
 					.attach("file", data.file.file, data.file.name)
 					.field("payload_json", JSON.stringify(body));
@@ -274,9 +278,9 @@ const handle = async (requestType, data) => {
 		case "GetReactions": {
 			const request = endpoints.getReactions(data.channelId, data.messageId, data.emoji);
 
-			if(data.hasOwnProperty("before")) request.query({ before: data.before });
-			else if(data.hasOwnProperty("after")) request.query({ after: data.after });
-			if(data.hasOwnProperty("limit")) request.query({ limit: data.limit });
+			if(hasProperty(data, "before")) request.query({ before: data.before });
+			else if(hasProperty(data, "after")) request.query({ after: data.after });
+			if(hasProperty(data, "limit")) request.query({ limit: data.limit });
 
 			const resp = await ratelimit(request);
 			return {
@@ -299,8 +303,8 @@ const handle = async (requestType, data) => {
 			const request = endpoints.editMessage(data.channelId, data.messageId);
 
 			const body = {};
-			if(data.hasOwnProperty("content")) body.content = data.content;
-			if(data.hasOwnProperty("embed")) body.embed = embedConverter(body.embed);
+			if(hasProperty(data, "content")) body.content = data.content;
+			if(hasProperty(data, "embed")) body.embed = embedConverter(body.embed);
 			request.send(body);
 
 			const resp = await ratelimit(request);
@@ -313,7 +317,7 @@ const handle = async (requestType, data) => {
 		case "DeleteMessage": {
 			const request = endpoints.deleteMessage(data.channelId, data.messageId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			await ratelimit(request);
 			return {
@@ -337,7 +341,7 @@ const handle = async (requestType, data) => {
 		case "EditChannelPermission": {
 			const request = endpoints.editChannelPermission(data.channelId, data.overwriteId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			request.send({
 				allow: Number(data.allow),
@@ -356,7 +360,7 @@ const handle = async (requestType, data) => {
 		case "DeleteChannelPermission": {
 			const request = endpoints.deleteChannelPermission(data.channelId, data.overwriteId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			await ratelimit(request);
 			return {
@@ -388,21 +392,21 @@ const handle = async (requestType, data) => {
 		case "EditGuild": {
 			const request = endpoints.editGuild(data.guildId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			const body = {};
 
-			if(data.hasOwnProperty("name")) body.name = data.name;
-			if(data.hasOwnProperty("region")) body.region = data.region;
-			if(data.hasOwnProperty("verificationLevel")) body.verification_level = data.verificationLevel;
-			if(data.hasOwnProperty("explicitContentFilter")) body.explicit_content_filter = data.explicitContentFilter;
-			if(data.hasOwnProperty("afkChannelId")) body.afk_channel_id = data.afkChannelId;
-			if(data.hasOwnProperty("afkTimeout")) body.afk_timeout = data.afkTimeout;
-			if(data.hasOwnProperty("icon")) body.icon = data.icon;
-			if(data.hasOwnProperty("ownerId")) body.owner_id = data.ownerId;
-			if(data.hasOwnProperty("splash")) body.splash = data.splash;
-			if(data.hasOwnProperty("systemChannelId")) body.system_channel_id = data.systemChannelId;
-			if(data.hasOwnProperty("defaultMessageNotifications")) {
+			if(hasProperty(data, "name")) body.name = data.name;
+			if(hasProperty(data, "region")) body.region = data.region;
+			if(hasProperty(data, "verificationLevel")) body.verification_level = data.verificationLevel;
+			if(hasProperty(data, "explicitContentFilter")) body.explicit_content_filter = data.explicitContentFilter;
+			if(hasProperty(data, "afkChannelId")) body.afk_channel_id = data.afkChannelId;
+			if(hasProperty(data, "afkTimeout")) body.afk_timeout = data.afkTimeout;
+			if(hasProperty(data, "icon")) body.icon = data.icon;
+			if(hasProperty(data, "ownerId")) body.owner_id = data.ownerId;
+			if(hasProperty(data, "splash")) body.splash = data.splash;
+			if(hasProperty(data, "systemChannelId")) body.system_channel_id = data.systemChannelId;
+			if(hasProperty(data, "defaultMessageNotifications")) {
 				body.default_message_notifications = data.defaultMessageNotifications;
 			}
 
@@ -428,19 +432,19 @@ const handle = async (requestType, data) => {
 		case "CreateGuildChannel": {
 			const request = endpoints.createGuildChannel(data.guildId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			const body = { name: data.name };
 
-			if(data.hasOwnProperty("type")) body.type = data.type;
-			if(data.hasOwnProperty("topic")) body.topic = data.topic;
-			if(data.hasOwnProperty("bitrate")) body.bitrate = data.bitrate;
-			if(data.hasOwnProperty("userLimit")) body.user_limit = data.userLimit;
-			if(data.hasOwnProperty("rateLimitPerUser")) body.rate_limit_per_user = data.rateLimitPerUser;
-			if(data.hasOwnProperty("position")) body.position = data.position;
-			if(data.hasOwnProperty("parentId")) body.parent_id = data.parentId;
-			if(data.hasOwnProperty("nsfw")) body.nsfw = data.nsfw;
-			if(data.hasOwnProperty("permissionOverwrites")) {
+			if(hasProperty(data, "type")) body.type = data.type;
+			if(hasProperty(data, "topic")) body.topic = data.topic;
+			if(hasProperty(data, "bitrate")) body.bitrate = data.bitrate;
+			if(hasProperty(data, "userLimit")) body.user_limit = data.userLimit;
+			if(hasProperty(data, "rateLimitPerUser")) body.rate_limit_per_user = data.rateLimitPerUser;
+			if(hasProperty(data, "position")) body.position = data.position;
+			if(hasProperty(data, "parentId")) body.parent_id = data.parentId;
+			if(hasProperty(data, "nsfw")) body.nsfw = data.nsfw;
+			if(hasProperty(data, "permissionOverwrites")) {
 				body.permission_overwrites = data.permissionOverwrites.map(overwrite => ({
 					id: overwrite.id,
 					type: overwrite.type,
@@ -471,8 +475,8 @@ const handle = async (requestType, data) => {
 		case "GetGuildMembers": {
 			const request = endpoints.getGuildMembers(data.guildId);
 
-			if(data.hasOwnProperty("limit")) request.query({ limit: data.limit });
-			if(data.hasOwnProperty("after")) request.query({ after: data.after });
+			if(hasProperty(data, "limit")) request.query({ limit: data.limit });
+			if(hasProperty(data, "after")) request.query({ after: data.after });
 
 			const resp = await ratelimit(request);
 			return {
@@ -484,14 +488,14 @@ const handle = async (requestType, data) => {
 		case "EditGuildMember": {
 			const request = endpoints.editGuildMember(data.guildId, data.userId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			const body = {};
 
-			if(data.hasOwnProperty("nick")) body.nick = data.nick;
-			if(data.hasOwnProperty("mute")) body.mute = data.mute;
-			if(data.hasOwnProperty("deaf")) body.deaf = data.deaf;
-			if(data.hasOwnProperty("channelId")) body.channel_id = data.channelId;
+			if(hasProperty(data, "nick")) body.nick = data.nick;
+			if(hasProperty(data, "mute")) body.mute = data.mute;
+			if(hasProperty(data, "deaf")) body.deaf = data.deaf;
+			if(hasProperty(data, "channelId")) body.channel_id = data.channelId;
 
 			request.send(body);
 
@@ -505,7 +509,7 @@ const handle = async (requestType, data) => {
 		case "AddGuildMemberRole": {
 			const request = endpoints.addGuildMemberRole(data.guildId, data.userId, data.roleId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			await ratelimit(request);
 			return {
@@ -517,7 +521,7 @@ const handle = async (requestType, data) => {
 		case "RemoveGuildMemberRole": {
 			const request = endpoints.removeGuildMemberRole(data.guildId, data.userId, data.roleId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			await ratelimit(request);
 			return {
@@ -529,7 +533,7 @@ const handle = async (requestType, data) => {
 		case "KickGuildMember": {
 			const request = endpoints.kickGuildMember(data.guildId, data.userId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			await ratelimit(request);
 			return {
@@ -578,7 +582,7 @@ const handle = async (requestType, data) => {
 		case "UnbanGuildMember": {
 			const request = endpoints.unbanGuildMember(data.guildId, data.userId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			await ratelimit(request);
 			return {
@@ -600,16 +604,16 @@ const handle = async (requestType, data) => {
 		case "CreateGuildRole": {
 			const request = endpoints.createGuildRole(data.guildId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			const body = {};
 
-			if(data.hasOwnProperty("name")) body.name = data.name;
-			if(data.hasOwnProperty("permissions")) body.permissions = Number(data.permissions);
-			if(data.hasOwnProperty("position")) body.position = data.position;
-			if(data.hasOwnProperty("color")) body.color = data.color;
-			if(data.hasOwnProperty("hoist")) body.hoist = data.hoist;
-			if(data.hasOwnProperty("mentionable")) body.mentionable = data.mentionable;
+			if(hasProperty(data, "name")) body.name = data.name;
+			if(hasProperty(data, "permissions")) body.permissions = Number(data.permissions);
+			if(hasProperty(data, "position")) body.position = data.position;
+			if(hasProperty(data, "color")) body.color = data.color;
+			if(hasProperty(data, "hoist")) body.hoist = data.hoist;
+			if(hasProperty(data, "mentionable")) body.mentionable = data.mentionable;
 
 			request.send(body);
 
@@ -623,16 +627,16 @@ const handle = async (requestType, data) => {
 		case "EditGuildRole": {
 			const request = endpoints.editGuildRole(data.guildId, data.roleId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			const body = {};
 
-			if(data.hasOwnProperty("name")) body.name = data.name;
-			if(data.hasOwnProperty("permissions")) body.permissions = Number(data.permissions);
-			if(data.hasOwnProperty("position")) body.position = data.position;
-			if(data.hasOwnProperty("color")) body.color = data.color;
-			if(data.hasOwnProperty("hoist")) body.hoist = data.hoist;
-			if(data.hasOwnProperty("mentionable")) body.mentionable = data.mentionable;
+			if(hasProperty(data, "name")) body.name = data.name;
+			if(hasProperty(data, "permissions")) body.permissions = Number(data.permissions);
+			if(hasProperty(data, "position")) body.position = data.position;
+			if(hasProperty(data, "color")) body.color = data.color;
+			if(hasProperty(data, "hoist")) body.hoist = data.hoist;
+			if(hasProperty(data, "mentionable")) body.mentionable = data.mentionable;
 
 			request.send(body);
 
@@ -646,7 +650,7 @@ const handle = async (requestType, data) => {
 		case "DeleteGuildRole": {
 			const request = endpoints.deleteGuildRole(data.guildId, data.roleId);
 
-			if(data.hasOwnProperty("reason")) request.set("X-Audit-Log-Reason", data.reason);
+			if(hasProperty(data, "reason")) request.set("X-Audit-Log-Reason", data.reason);
 
 			await ratelimit(request);
 			return {
@@ -690,7 +694,7 @@ module.exports = async (requestType, data) => {
 	try {
 		return await handle(requestType, data);
 	} catch(error) {
-		if(error.hasOwnProperty(Symbol.for("DiscordError"))) {
+		if(hasProperty(error, Symbol.for("DiscordError"))) {
 			return {
 				responseType: "discord.types.HTTPError",
 				data: {

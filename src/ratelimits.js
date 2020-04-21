@@ -65,7 +65,7 @@ module.exports = async request => {
 
 		return await module.exports(redis, request);
 	} else if(response.status >= 400) {
-		if(response.body.hasOwnProperty("code")) {
+		if(Object.prototype.hasOwnProperty.call(response.body, "code")) {
 			const error = new Error(response.body.message);
 			error[Symbol.for("DiscordError")] = true;
 			error.code = response.body.code;
