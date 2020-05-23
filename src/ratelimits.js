@@ -47,7 +47,8 @@ module.exports = async request => {
 
 	const response = await request.set({
 		Authorization: `Bot ${process.env.TOKEN}`,
-		"User-Agent": `DiscordBot (https://github.com/oxylbot, ${version})`
+		"User-Agent": `DiscordBot (https://github.com/oxylbot, ${version})`,
+		"X-RateLimit-Precision": "millisecond"
 	}).ok(res => true);
 
 	if(response.headers["X-RateLimit-Global"]) {
