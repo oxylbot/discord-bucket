@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-const BASE_URL = "https://discordapp.com/api/v6";
+const BASE_URL = "https://discord.com/api/v6";
 const CDN_BASE_URL = "https://cdn.discordapp.com";
 const superagent = require("superagent");
 
