@@ -143,3 +143,9 @@ message Attachment {
     optional uint32 height = 5;
     optional uint32 width = 6;
 }
+
+message AllowedMentions {
+    repeated string parse = 1;
+    repeated string roles = 2;
+    repeated string users = 3;
+}

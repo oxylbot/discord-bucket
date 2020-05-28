@@ -239,6 +239,7 @@ const handle = async (requestType, data) => {
 			};
 
 			if(hasProperty(data, "embed")) body.embed = embedConverter(body.embed);
+			if(hasProperty(data, "allowedMentions")) body.allowedMnetions = data.allowedMentions;
 
 			if(hasProperty(data, "file")) {
 				request.type("form")
@@ -305,6 +306,7 @@ const handle = async (requestType, data) => {
 			const body = {};
 			if(hasProperty(data, "content")) body.content = data.content;
 			if(hasProperty(data, "embed")) body.embed = embedConverter(body.embed);
+			if(hasProperty(data, "allowedMentions")) body.allowedMnetions = data.allowedMentions;
 			request.send(body);
 
 			const resp = await ratelimit(request);

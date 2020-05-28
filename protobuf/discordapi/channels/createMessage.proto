@@ -9,4 +9,5 @@ message Request {
     required string content = 2 [default = ""];
     optional discord.types.File file = 3;
     optional discord.types.Embed embed = 4;
+    optional discord.types.AllowedMentions = 5;
 }

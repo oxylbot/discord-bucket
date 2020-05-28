@@ -9,4 +9,5 @@ message Request {
     required string message_id = 2;
     optional string content = 3;
     optional discord.types.Embed embed = 4;
+    optional discord.types.AllowedMentions = 5;
 }
