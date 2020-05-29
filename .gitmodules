@@ -1,0 +1,3 @@
+[submodule "bucket-proto"]
+	path = bucket-proto
+	url = https://github.com/oxylbot/bucket-proto
