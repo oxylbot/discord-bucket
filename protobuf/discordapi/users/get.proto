@@ -1,7 +1,0 @@
-syntax = "proto2";
-
-package discord.users.get;
-
-message Request {
-    required string user_id = 1;
-}

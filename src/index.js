@@ -5,9 +5,9 @@ const RequestSocket = require("./RequestSocket");
 const socket = new RequestSocket();
 
 async function init() {
-	const rpcProto = await protobuf.load(path.resolve(__dirname, "..", "protobuf", "rpcWrapper.proto"));
+	const rpcProto = await protobuf.load(path.resolve(__dirname, "..", "bucket-proto", "rpcWrapper.proto"));
 	const discordProto = await protobuf.load(
-		path.resolve(__dirname, "..", "protobuf", "discordapi", "service.proto")
+		path.resolve(__dirname, "..", "bucket-proto", "discordapi", "service.proto")
 	);
 
 	socket.start({

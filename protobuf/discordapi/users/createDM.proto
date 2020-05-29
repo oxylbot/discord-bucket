@@ -1,7 +1,0 @@
-syntax = "proto2";
-
-package discord.users.createDM;
-
-message Request {
-    required string recipient_id = 1;
-}
