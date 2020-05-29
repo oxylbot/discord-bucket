@@ -146,7 +146,8 @@ const handle = async (requestType, data) => {
 						total: resp.body.session_start_limit.total,
 						remaining: resp.body.session_start_limit.remaining,
 						resetAfter: resp.body.session_start_limit.reset_after
-					}
+					},
+					maxConcurrency: resp.body.max_concurrency
 				}
 			};
 		}

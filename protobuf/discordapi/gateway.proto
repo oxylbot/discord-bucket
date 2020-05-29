@@ -6,6 +6,7 @@ message Response {
     required string url = 1;
     required uint32 shards = 2;
     required SessionStartLimit session_start_limit = 3;
+    required uint32 max_concurrency = 4;
 }
 
 message SessionStartLimit {
