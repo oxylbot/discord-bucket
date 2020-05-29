@@ -38,7 +38,8 @@ message Guild {
     required string owner_id = 5;
     optional uint64 permissions = 6;
     required string region = 7;
-    optional uint32 member_count = 8;
+    optional uint32 approximate_member_count = 8;
+    optional uint32 approximate_presence_count = 12;
     repeated Role roles = 9;
     repeated Member members = 10;
     repeated Channel channels = 11;

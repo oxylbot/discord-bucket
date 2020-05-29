@@ -67,7 +67,8 @@ const converter = {
 			ownerId: guild.owner_id,
 			permissions: guild.permission,
 			region: guild.region,
-			memberCount: guild.member_count,
+			approximatememberCount: guild.approximate_member_count,
+			approximatePresenceCount: guild.approximate_presence_count,
 			roles: guild.roles.map(role => converter.role(role)),
 			members: (guild.members || []).map(member => converter.member(member)),
 			channels: (guild.channels || []).map(channel => converter.channel(channel))
