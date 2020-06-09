@@ -2,19 +2,27 @@
   "bumpVersion": "major",
   "prCreation": "not-pending",
   "rangeStrategy": "bump",
+  "travis": {
+    "enabled": true
+  },
+  "supportPolicy": [
+    "current"
+  ],
   "packageRules": [
     {
       "datasources": [
         "docker"
+      ],
+      "packageNames": [
+        "node"
       ]
     },
     {
       "managers": [
         "npm"
       ],
-      "updateTypes": [
-        "minor",
-        "patch"
+      "depTypeList": [
+        "devDependencies"
       ],
       "automerge": true,
       "automergeType": "branch"
@@ -23,8 +31,10 @@
       "managers": [
         "npm"
       ],
-      "depTypeList": [
-        "devDependencies"
+      "updateTypes": [
+        "minor",
+        "patch",
+        "pin"
       ],
       "automerge": true,
       "automergeType": "branch"

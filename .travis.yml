@@ -1,6 +1,8 @@
+dist: bionic
+
 language: node_js
 node_js:
- - "11.6.0"
+ - "14.4.0"
 cache: npm
 
 git:
