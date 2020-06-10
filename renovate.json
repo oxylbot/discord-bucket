@@ -1,5 +1,4 @@
 {
-  "bumpVersion": "major",
   "prCreation": "not-pending",
   "rangeStrategy": "bump",
   "travis": {
