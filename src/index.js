@@ -1,3 +1,4 @@
+const logger = require("./logger");
 const path = require("path");
 const protobuf = require("protobufjs");
 
@@ -6,10 +7,13 @@ const socket = new RequestSocket();
 
 async function init() {
 	const rpcProto = await protobuf.load(path.resolve(__dirname, "..", "bucket-proto", "rpcWrapper.proto"));
+	logger.info("Loaded RPC protobuf");
 	const discordProto = await protobuf.load(
 		path.resolve(__dirname, "..", "bucket-proto", "service.proto")
 	);
+	logger.info("Loaded Discord protobuf");
 
+	logger.info("Starting socket");
 	socket.start({
 		discord: discordProto,
 		rpc: rpcProto
@@ -17,11 +21,12 @@ async function init() {
 }
 
 process.on("unhandledRejection", error => {
-	console.error(error.stack);
+	logger.error(error.stack);
 	process.exit(1);
 });
 
 process.on("SIGTERM", () => {
+	logger.info("Closing socket due to SIGTERM");
 	socket.close();
 
 	process.exit(0);

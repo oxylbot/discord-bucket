@@ -20,6 +20,7 @@
     "ioredis": "^4.17.3",
     "protobufjs": "^6.9.0",
     "superagent": "^5.2.2",
+    "winston": "^3.2.1",
     "zeromq": "^6.0.0-beta.6"
   },
   "devDependencies": {

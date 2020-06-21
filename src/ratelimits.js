@@ -1,3 +1,4 @@
+const logger = require("./logger");
 const Redis = require("ioredis");
 const { version } = require("../package");
 
@@ -8,11 +9,13 @@ const redis = new Redis({
 	db: +process.env.REDIS_DATABASE,
 	maxRetriesPerRequest: null,
 	reconnectOnError(error) {
+		logger.verbose(`Redis disconnected: ${error.message}}`);
 		return error.message.startsWith("connect ETIMEDOUT");
 	}
 });
 
 redis.on("error", error => {
+	logger.verbose(`Redis erroredd: ${error.message}}`);
 	if(error.message.startsWith("connect ETIMEDOUT")) {
 		redis.connect();
 	}
@@ -28,6 +31,8 @@ function getRoute(request) {
 		else return `${type}/id`;
 	}).substring(request.url.indexOf("api") + 4);
 	if(route.endsWith("/messages/id") && request.method === "DELETE") route += `${request.method} ${route}`;
+
+	return route;
 }
 
 module.exports = async request => {
@@ -36,15 +41,18 @@ module.exports = async request => {
 	const globalBlock = await redis.exists("global");
 	if(globalBlock) {
 		const ttl = await redis.pttl("global");
+		logger.verbose(`Waiting ${ttl}ms for global block`);
 		await new Promise(resolve => setTimeout(resolve, ttl));
 	} else {
 		const remaining = await redis.get(`${route}:remaining`);
 		if(remaining === 0) {
 			const ttl = await redis.pttl(`${route}:remaining`);
+			logger.verbose(`Waiting ${ttl}ms for route ratelimit`);
 			await new Promise(resolve => setTimeout(resolve, ttl));
 		}
 	}
 
+	logger.verbose(`Sending request to ${request.url} (${route})`);
 	const response = await request.set({
 		Authorization: `Bot ${process.env.TOKEN}`,
 		"User-Agent": `DiscordBot (https://github.com/oxylbot, ${version})`,
@@ -64,8 +72,10 @@ module.exports = async request => {
 			delete request[key];
 		});
 
+		logger.verbose("Request got ratelimited! Re-trying");
 		return await module.exports(redis, request);
 	} else if(response.status >= 400) {
+		logger.verbose("Request encountered response code >=400");
 		if(Object.prototype.hasOwnProperty.call(response.body, "code")) {
 			const error = new Error(response.body.message);
 			error[Symbol.for("DiscordError")] = true;
@@ -77,6 +87,7 @@ module.exports = async request => {
 			throw response.error;
 		}
 	} else {
+		logger.verbose("Request was successful");
 		return response;
 	}
 };

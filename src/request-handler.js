@@ -1,4 +1,5 @@
 const endpoints = require("./endpoints");
+const logger = require("./logger");
 const ratelimit = require("./ratelimits");
 
 function hasProperty(obj, prop) {
@@ -133,6 +134,8 @@ const embedConverter = data => {
 };
 
 const handle = async (requestType, data) => {
+	logger.debug(`Handling a ${requestType} request`);
+
 	switch(requestType) {
 		case "GetGateway": {
 			const request = endpoints.getGateway();
