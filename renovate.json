@@ -11,6 +11,11 @@
     {
       "datasources": [
         "docker"
+      ],
+      "updateTypes": [
+        "minor",
+        "patch",
+        "major"
       ]
     },
     {
