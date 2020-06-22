@@ -11,9 +11,6 @@
     {
       "datasources": [
         "docker"
-      ],
-      "packageNames": [
-        "node"
       ]
     },
     {
