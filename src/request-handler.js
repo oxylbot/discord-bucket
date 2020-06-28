@@ -97,6 +97,17 @@ const converter = {
 			avatar: user.avatar,
 			bot: !!user.bot
 		};
+	},
+	role(role) {
+		return {
+			id: role.id,
+			name: role.name,
+			color: role.color,
+			hoist: role.hoist,
+			position: role.position,
+			permissions: role.permissions,
+			mentionable: role.mentionable
+		};
 	}
 };
 
