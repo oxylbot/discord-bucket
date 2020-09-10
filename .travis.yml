@@ -2,7 +2,7 @@ dist: bionic
 
 language: node_js
 node_js:
- - "v14.9.0"
+ - "v14.10.1"
 cache: npm
 
 git:
