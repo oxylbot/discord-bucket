@@ -24,7 +24,7 @@
     "zeromq": "^6.0.0-beta.6"
   },
   "devDependencies": {
-    "eslint": "7.10.0",
+    "eslint": "7.11.0",
     "eslint-config-recommended": "4.1.0"
   }
 }
